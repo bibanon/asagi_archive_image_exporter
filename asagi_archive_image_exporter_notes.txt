@@ -1,0 +1,51 @@
+asagi_archive_image_exporter_notes.txt
+
+
+
+===== PLAN =====
+
+This tool should be dumb.
+Persist as little state as possible.
+Dump rows for each image we export into a CSV file
+Row 0 of the CSV file should be colum names to ensure clarity.
+
+
+===== Basic high-level pseudocode =====
+
+#Given a start position and a database table:
+
+#Grab list of things to export
+start_position = 0
+results = sql("SELECT * WHERE 'id' > start_position")
+
+#Store results in text file
+for result in results:
+    textfile.append(result)
+
+tmp_zip_path = 'tmp/runstarttimestamp.boardname.zip'
+# Add each file to the export zip
+for line in textfile:
+    zip(in_path=line.imgpath, out_path=tmp_zip_path)
+
+# Move zip from tempdir to finaldir to signify success
+mvfile(tmp_zip_path, final_zip_path)
+
+
+===== Step 1 =====
+Get a CSV file of things to zip from the database
+
+
+
+
+===== Setep 2 =====
+Zip files listed in .CSV file all togehter into one zip file, preserving paths
+
+
+
+
+
+
+
+
+
+
