@@ -15,53 +15,13 @@ import os
 import csv
 # Remote libraries
 import sqlite3
+import sqlalchemy
+from sqlalchemy.ext.automap import automap_base
+from sqlalchemy.orm import Session
+from sqlalchemy import create_engine
 # local
 from common import *# Things like logging setup
 import db_test_config
-
-
-
-
-
-
-
-
-
-
-
-
-def dev():
-    """For development/debugging in IDE/editor without CLI arguments"""
-    logging.warning('running dev()')
-
-    db_name = 'asagi experiments 2018-7'
-
-    # Dump a table
-##    dump_table(
-##        database,
-##        table_name='',
-##        start_position=0,
-##        output_filepath=os.path.join('debug', 'step1_dump_img_table', 'img.csv')
-##    )
-
-    logging.warning('exiting dev()')
-    return
-
-
-def main():
-##    dev()
-    return
-
-
-if __name__ == '__main__':
-    setup_logging(os.path.join("debug", "db_test.log.txt"))# Setup logging
-    try:
-        main()
-    # Log exceptions
-    except Exception, e:
-        logging.critical("Unhandled exception!")
-        logging.exception(e)
-    logging.info("Program finished.")
 
 
 
@@ -72,7 +32,6 @@ def dump_partial_table(connection_string, table_name, csv_output_path, start_fro
     from sqlalchemy.ext.automap import automap_base
     from sqlalchemy.orm import Session
     from sqlalchemy import create_engine
-    import csv
 
     Base = automap_base()
 
@@ -105,7 +64,6 @@ def dump_table(connection_string, table_name, csv_output_path):
     from sqlalchemy.ext.automap import automap_base
     from sqlalchemy.orm import Session
     from sqlalchemy import create_engine
-    import csv
 
     Base = automap_base()
 
@@ -132,12 +90,43 @@ def dump_table(connection_string, table_name, csv_output_path):
 
 
 
-if __name__ == "__main__":
+
+
+
+def dev():
+    """For development/debugging in IDE/editor without CLI arguments"""
+    logging.warning('running dev()')
+
+    db_name = 'asagi experiments 2018-7'
+
+    # Dump a table
     dump_table(
         connection_string=db_test_config.SQLITE_CONNECT_STRING,
         table_name=db_test_config.SQLITE_TABLE_NAME,
         csv_output_path=db_test_config.CSV_OUTPUT_FILEPATH
     )
+
+    logging.warning('exiting dev()')
+    return
+
+
+def main():
+##    dev()
+    return
+
+
+if __name__ == '__main__':
+    setup_logging(os.path.join("debug", "db_test.log.txt"))# Setup logging
+    try:
+        main()
+    # Log exceptions
+    except Exception, e:
+        logging.critical("Unhandled exception!")
+        logging.exception(e)
+    logging.info("Program finished.")
+
+
+
 
 connection_string=db_test_config.SQLITE_CONNECT_STRING
 table_name=db_test_config.SQLITE_TABLE_NAME
@@ -145,11 +134,7 @@ csv_output_path=db_test_config.CSV_OUTPUT_FILEPATH
 
 
 
-import sqlalchemy
-from sqlalchemy.ext.automap import automap_base
-from sqlalchemy.orm import Session
-from sqlalchemy import create_engine
-import csv
+
 
 Base = automap_base()
 
