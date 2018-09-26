@@ -23,46 +23,73 @@ import db_test_config
 
 
 
-# https://www.blog.pythonlibrary.org/2010/09/10/sqlalchemy-connecting-to-pre-existing-databases/
-
-
-from sqlalchemy import create_engine, MetaData, Table
-from sqlalchemy.orm import mapper, sessionmaker
-
-class BoardClass(object):
-    """Represents a board we are running over"""
-    pass
-
-#----------------------------------------------------------------------
-def loadSession():
-    """"""
-
-    return session
-
-if __name__ == "__main__":
-    # Load session
-    engine = create_engine(db_test_config.CONNECT_STRING, echo=True)
-
-    metadata = MetaData(engine)
-    table = Table('a', metadata, autoload=True)
-    mapper(BoardClass, table)
-
-    Session = sessionmaker(bind=engine)
-    session = Session()
-
-    # Get column names
-
-    # Read table
-    res = session.query(BoardClass).all()
-##    print(res[1].timestamp)
-    for row_number in xrange(0, 1000):
-        print(res[row_number])
-
-
-
+### https://www.blog.pythonlibrary.org/2010/09/10/sqlalchemy-connecting-to-pre-existing-databases/
+##
+##
+##from sqlalchemy import create_engine, MetaData, Table
+##from sqlalchemy.orm import mapper, sessionmaker
+##
+##class BoardClass(object):
+##    """Represents a board we are running over"""
+##    pass
+##
+###----------------------------------------------------------------------
+##def loadSession():
+##    """"""
+##
+##    return session
+##
+##if __name__ == "__main__":
+##    # Load session
+##    engine = create_engine(db_test_config.CONNECT_STRING, echo=True)
+##
+##    metadata = MetaData(engine)
+##    table = Table('a', metadata, autoload=True)
+##    mapper(BoardClass, table)
+##
+##    Session = sessionmaker(bind=engine)
+##    session = Session()
+##
+##    # Get column names
+##
+##    # Read table
+##    res = session.query(BoardClass).all()
+####    print(res[1].timestamp)
+##    for row_number in xrange(0, 1000):
+##        print(res[row_number])
 
 
 
+
+
+
+
+
+# https://stackoverflow.com/questions/4613465/using-python-to-write-mysql-query-to-csv-need-to-show-field-names
+import MySQLdb as dbapi
+import sys
+import csv
+
+dbServer='localhost'
+dbPass='supersecretpassword'
+dbSchema='dbTest'
+dbUser='root'
+
+dbQuery='SELECT * FROM pbTest.Orders;'
+
+db=dbapi.connect(host=dbServer,user=dbUser,passwd=dbPass)
+cur=db.cursor()
+cur.execute(dbQuery)
+
+result = cur.fetchall()
+
+#Getting Field Header names
+column_names = [i[0] for i in cur.description]
+fp = open('Result_Set.csv' 'w')
+myFile = csv.writer(fp, lineterminator = '\n') #use lineterminator for windows
+myFile.writerow(column_names)
+myFile.writerows(result)
+fp.close()
 
 
 
