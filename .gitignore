@@ -3,3 +3,4 @@ download/
 git_ignored/
 data/
 *.pyc
+*_config.py

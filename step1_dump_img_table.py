@@ -69,6 +69,8 @@ def dev():
     """For development/debugging in IDE/editor without CLI arguments"""
     logging.warning('running dev()')
 
+    db_name = 'asagi experiments 2018-7'
+
     # Dump a table
     dump_table(
         database,
