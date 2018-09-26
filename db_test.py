@@ -65,31 +65,32 @@ import db_test_config
 
 
 
-# https://stackoverflow.com/questions/4613465/using-python-to-write-mysql-query-to-csv-need-to-show-field-names
-import MySQLdb as dbapi
-import sys
-import csv
-
-dbServer='localhost'
-dbPass='supersecretpassword'
-dbSchema='dbTest'
-dbUser='root'
-
-dbQuery='SELECT * FROM pbTest.Orders;'
-
-db=dbapi.connect(host=dbServer,user=dbUser,passwd=dbPass)
-cur=db.cursor()
-cur.execute(dbQuery)
-
-result = cur.fetchall()
-
-#Getting Field Header names
-column_names = [i[0] for i in cur.description]
-fp = open('Result_Set.csv' 'w')
-myFile = csv.writer(fp, lineterminator = '\n') #use lineterminator for windows
-myFile.writerow(column_names)
-myFile.writerows(result)
-fp.close()
+### https://stackoverflow.com/questions/4613465/using-python-to-write-mysql-query-to-csv-need-to-show-field-names
+##import MySQLdb as dbapi
+##import sys
+##import csv
+##
+##
+##dbQuery='SELECT * FROM `asagi experiments 2018-7`.a;'
+##
+##db=dbapi.connect(
+##    host=db_test_config.IP,
+##    user=db_test_config.USERNAME,
+##    passwd=db_test_config.PASSWEORD
+##)
+##
+##cur=db.cursor()
+##cur.execute(dbQuery)
+##
+##result = cur.fetchall()
+##
+###Getting Field Header names
+##column_names = [i[0] for i in cur.description]
+##fp = open('Result_Set.csv' 'w')
+##myFile = csv.writer(fp, lineterminator = '\n') #use lineterminator for windows
+##myFile.writerow(column_names)
+##myFile.writerows(result)
+##fp.close()
 
 
 
