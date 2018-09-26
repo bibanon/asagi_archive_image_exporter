@@ -34,10 +34,12 @@ def zip_from_csv(csv_path, zip_path):
     logging.info('Zipping files in {0} to {1}'.format(csv_path, zip_path))
     row_counter = 0
     with zipfile.ZipFile(zip_path, 'w') as myzip:
-        with open(csv_path, 'rb') as csvfile:
-            reader = csv.DictReader(csvfile)
+        with open(csv_path, 'rb', ) as csvfile:
+            reader = csv.DictReader(csvfile, delimiter=',',quotechar='"', quoting = csv.QUOTE_MINIMAL)
             for row in reader:
                 row_counter += 1
+                if (row_counter % 100 == 0):
+                    logging.info('Processed {0} rows.'.format(row_counter))
                 # Add media to zip
                 if row['media']:
     ##                myzip.write(row['media'])
