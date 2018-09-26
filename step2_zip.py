@@ -17,7 +17,7 @@ import zipfile
 # Remote libraries
 # local
 from common import *# Things like logging setup
-
+import config
 
 
 
@@ -28,6 +28,7 @@ def add_to_zip(zip_obj, filepath):
         zip_obj.write(filepath)
     except WindowsError, err:
         logging.error(err)
+    return
 
 
 def zip_from_csv(csv_path, zip_path):
@@ -56,12 +57,30 @@ def zip_from_csv(csv_path, zip_path):
     return
 
 
+def cli():
+    """Command line running"""
+    # Handle command line args
+    parser = argparse.ArgumentParser()
+    parser.add_argument('csv_path', help='csv_path',
+                    type=str)
+    parser.add_argument('zip_path', help='zip_path',
+                    type=str)
+    args = parser.parse_args()
+
+    logging.debug('args: {0!r}'.format(args))# Record CLI arguments
+
+    zip_from_csv(csv_path=args.csv_path, zip_path=args.zip_path)
+
+    logging.info('exiting cli()')
+    return
+
+
 def dev():
     """For development/debugging in IDE/editor without CLI arguments"""
     logging.warning('running dev()')
 
-    csv_path = os.path.join('data', 'g_images.csv')
-    zip_path = os.path.join('data', 'g_images.zip')
+    csv_path = config.CSV_FILEPATH
+    zip_path = config.ZIP_PATH
     zip_from_csv(csv_path, zip_path)
 
     logging.warning('exiting dev()')
