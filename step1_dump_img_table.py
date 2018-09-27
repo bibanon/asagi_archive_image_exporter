@@ -21,7 +21,7 @@ from sqlalchemy.orm import Session
 from sqlalchemy import create_engine
 # local
 from common import *# Things like logging setup
-import config
+
 
 
 
@@ -109,6 +109,7 @@ def dump_table(connection_string, table_name, csv_filepath):
 def dev():
     """For development/debugging in IDE/editor without CLI arguments"""
     logging.warning('running dev()')
+    import config
 
     # Dump a table
     dump_table(

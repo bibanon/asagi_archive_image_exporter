@@ -10,6 +10,11 @@ Dump rows for each image we export into a CSV file
 Row 0 of the CSV file should be colum names to ensure clarity.
 
 
+The two scripts should not depend on each other.
+One should produce a simple .csv file, the other should read a simple .csv file.
+
+
+
 ===== Basic high-level pseudocode =====
 
 #Given a start position and a database table:
@@ -31,19 +36,41 @@ for line in textfile:
 mvfile(tmp_zip_path, final_zip_path)
 
 
+
+
+
+
+
 ===== Step 1 =====
 Get a CSV file of things to zip from the database
+Produces a .CSV file with a header containing column names.
+
+USAGE:
 
 
 
 
 ===== Setep 2 =====
 Zip files listed in .CSV file all togehter into one zip file, preserving paths
+Requires a .CSV file with a header on the first line containing column names.
+Should be able to accept any .CSV dump with the required fields as long as it has a valid header?
+
+
+USAGE:
+python step2_zip.py csv_path image_dir_base_path zip_path
+Use . for current dir.
+
+python step2_zip.py data/g_images.csv . data/g_images.zip
 
 
 
 
+===== Installation =====
+pip install sqlalchemy
 
+Figure out which SQL connector you need for your DB to work with SQLalchemy and install that.
+ex.
+pip install sqlite3
 
 
 

@@ -29,6 +29,7 @@ import db_test_config
 
 def dump_partial_table(connection_string, table_name, csv_output_path, start_from, stop_at=None):
     logging.debug('dump_partial_table() locals() = {0!r}'.format(locals()))# Record arguments
+    # https://stackoverflow.com/questions/2952366/dump-csv-from-sqlalchemy
 
     Base = automap_base()
 
