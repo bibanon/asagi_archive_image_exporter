@@ -42,9 +42,9 @@ def dump_partial_table(connection_string, table_name, csv_filepath, start_from, 
 
     session = Session(engine, autoflush=False)
 
-    # Select all rows
-    all_images_q = session.query(Images)
-    logging.info('len(all_images_q.all()) = {0}'.format(len(all_images_q.all())))
+##    # Select all rows
+##    all_images_q = session.query(Images)
+##    logging.info('len(all_images_q.all()) = {0}'.format(len(all_images_q.all())))
 
 ##    # Select the subset as or more recent than the supplied value
 ##    new_images_q = all_images_q.filter(Images.media >= u'debug/g/image/153/2/1532795456190.png')
@@ -64,10 +64,11 @@ def dump_partial_table(connection_string, table_name, csv_filepath, start_from, 
     with open(csv_filepath, 'w') as csvfile:
         outcsv = csv.writer(csvfile, delimiter=',',quotechar='"', quoting = csv.QUOTE_MINIMAL)
 
+        # Write header
         header = Images.__table__.columns.keys()
-
         outcsv.writerow(header)
 
+        # Write records
         for record in range_images_q.all():# Write only images in the specified range
             outcsv.writerow([getattr(record, c) for c in header ])
 
@@ -76,7 +77,7 @@ def dump_partial_table(connection_string, table_name, csv_filepath, start_from, 
 
 
 def dump_table(connection_string, table_name, csv_filepath):
-    logging.debug('dump_table() locals() = {0!r}'.format(locals()))# Record arguments
+    logging.debug('dump_table() args = {0!r}'.format(locals()))# Record arguments
     # https://stackoverflow.com/questions/2952366/dump-csv-from-sqlalchemy
 
     Base = automap_base()
@@ -113,21 +114,21 @@ def dev():
     logging.warning('running dev()')
     import config
 
-    # Dump a table
-    dump_table(
-        connection_string=config.CONNECT_STRING,
-        table_name=config.TABLE_NAME,
-        csv_filepath=config.CSV_FILEPATH
-    )
-
-##    # Dump a range within a table
-##    dump_partial_table(
+##    # Dump a table
+##    dump_table(
 ##        connection_string=config.CONNECT_STRING,
 ##        table_name=config.TABLE_NAME,
-##        csv_filepath=config.CSV_FILEPATH,
-##        start_from='debug/g/image/153/2/1532795456190.png',
-##        stop_at=None
+##        csv_filepath=config.CSV_FILEPATH
 ##    )
+
+    # Dump a range within a table
+    dump_partial_table(
+        connection_string=config.CONNECT_STRING,
+        table_name=config.TABLE_NAME,
+        csv_filepath=config.CSV_FILEPATH,
+        start_from='1536638719722.webm',
+        stop_at=None
+    )
 
     logging.warning('exiting dev()')
     return
@@ -162,8 +163,8 @@ def cli():
 
 
 def main():
-    dev()
-##    cli()
+##    dev()
+    cli()
     return
 
 

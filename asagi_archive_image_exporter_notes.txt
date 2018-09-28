@@ -15,8 +15,50 @@ One should produce a simple .csv file, the other should read a simple .csv file.
 
 
 
+
+
+
 +++Questions+++
 How is data escaped?
+    TODO FIXME FIGURE THIS OUT SOON!
+
+
+How do we assign names to each dump?
+    Proposal 1:
+    db_name.board.lower_end.higher_end.zip
+
+    Proposal 2:
+    start_unixtime.zip
+
+    Proposal 3:
+    board.lower_end.higher_end.zip
+
+    Proposal 4:
+    # Geting the DB name takes more effort than getting the table name
+    step1 (DB to CSV): tablename.lower_end.higher_end.csv
+    step2 (zipper): Whatever the csv file was called excluding the .csv. ex. '123.csv' -> '123.zip'
+
+
+
+
+Input filepaths:
+    base/image/1536/63/1536631035276.webm
+
+
+Zip filename:
+    dumpname.zip
+
+
+Output paths in the zip file:
+    dump_name.csv
+    <boardName>/<thumb or image>/<char 0-3>/<char 4-5>/<full image name>
+    a/image/012/34/01234567.png
+
+
+
+
+
+
 
 
 ===== Basic high-level pseudocode =====
@@ -79,4 +121,22 @@ pip install sqlite3
 
 
 
+
+===== Misc notes =====
+
+
+edward_ says:
+SELECT media_orig FROM gif WHRE timestamp > threshold (for full images)
+and 
+SELECT preview_orig FROM git WHERE timestamp > threshold (for previews)
+
+preview_orig will look like 1397912081601s.jpg and media_orig looks like 1397912081601.gif
+each is located in boards/<boardName>/<thumb or image>/<char 0-3>/<char 4-5>/<full image name>
+
+
+
+
+
+SQL commands to generate CSV dump:
+TODO
 

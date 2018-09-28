@@ -32,17 +32,31 @@ def add_to_zip(zip_obj, filepath, internal_path):
     return
 
 
-
-def generate_media_filepath(base_path, media_field):
-    # Expects media field to look like: '1536631035276.webm'
+def generate_image_filepath(board_dir, filename):
+    # Expects filename to look like: '1536631035276.webm'
     # Outputs: 'BASE/153/6/1536631035276.webm'
-    assert(len(media_field) > 4)# We can't generate a path is this is lower, and the value is based on unix time so should always be over 1,000,000
-    media_filepath = os.path.join(base_path, media_field[0:2], media_field[2], media_field)
+    # boards/<boardName>/<thumb or image>/<char 0-3>/<char 4-5>/<full image name>
+    # base/image/1536/63/1536631035276.webm
+    assert(len(filename) > 4)# We can't generate a path is this is lower, and the value is based on unix time so should always be over 1,000,000
+    media_filepath = os.path.join(board_dir, filename[0:4], filename[4:6], filename)# string positions 0,1,2,3/4,5/filename
     return media_filepath
 
 
+def generate_full_image_filepath(base_path, board_name, filename):
+    # boards/<boardName>/<thumb or image>/<char 0-3>/<char 4-5>/<full image name>
+    board_dir = os.path.join(base_path, 'image', board_name)
+    full_image_filepath = generate_image_filepath(board_dir, filename)
+    return full_image_filepath
 
-def zip_from_csv(csv_path, images_dir_base_path, zip_path):
+
+def generate_thumbnail_image_filepath(base_path, board_name, filename):
+    # boards/<boardName>/<thumb or image>/<char 0-3>/<char 4-5>/<full image name>
+    board_dir = os.path.join(base_path, 'thumb', board_name)
+    full_image_filepath = generate_image_filepath(board_dir, filename)
+    return full_image_filepath
+
+
+def zip_from_csv(csv_path, base_path, zip_path, board_name):
     logging.info('Zipping files in {0} to {1}'.format(csv_path, zip_path))
     row_counter = 0
     with zipfile.ZipFile(zip_path, 'w') as myzip:
@@ -50,7 +64,7 @@ def zip_from_csv(csv_path, images_dir_base_path, zip_path):
         add_to_zip(
             zip_obj=myzip,
             filepath=os.path.join(csv_path),
-            internal_path=csv_path
+            internal_path=os.path.basename(csv_path)
         )
 
         # Add images from each row in the CSV file
@@ -64,21 +78,35 @@ def zip_from_csv(csv_path, images_dir_base_path, zip_path):
                 if row['media']:
                     add_to_zip(
                         zip_obj=myzip,
-                        filepath=os.path.join(images_dir_base_path, row['media']),
+                        filepath=generate_full_image_filepath(
+                            base_path=base_path,
+                            board_name=board_name,
+                            filename=row['media']
+                        ),
                         internal_path=row['media']
                     )
+
                 # Add preview_op to zip
                 if row['preview_op']:
                     add_to_zip(
                         zip_obj=myzip,
-                        filepath=os.path.join(images_dir_base_path, row['preview_op']),
+                        filepath=generate_thumbnail_image_filepath(
+                            base_path=base_path,
+                            board_name=board_name,
+                            filename=row['preview_op']
+                        ),
                         internal_path=row['preview_op']
                     )
+
                 # Add preview_reply to zip
                 if row['preview_reply']:
                     add_to_zip(
                         zip_obj=myzip,
-                        filepath=os.path.join(images_dir_base_path, row['preview_reply']),
+                        filepath=generate_thumbnail_image_filepath(
+                            base_path=base_path,
+                            board_name=board_name,
+                            filename=row['preview_reply']
+                        ),
                         internal_path=row['preview_reply']
                     )
     logging.info('Finished zipping files from {0} rows in {1} to {2}'.format(row_counter, csv_path, zip_path))
@@ -91,15 +119,22 @@ def cli():
     parser = argparse.ArgumentParser()
     parser.add_argument('csv_path', help='csv_path',
                     type=str)
-    parser.add_argument('images_dir_base_path', help='images_dir_base_path',
+    parser.add_argument('base_path', help='base_path',
                     type=str)
     parser.add_argument('zip_path', help='zip_path',
+                    type=str)
+    parser.add_argument('board_name', help='board_name',
                     type=str)
     args = parser.parse_args()
 
     logging.debug('args: {0!r}'.format(args))# Record CLI arguments
 
-    zip_from_csv(csv_path=args.csv_path, images_dir_base_path=args.images_dir_base_path, zip_path=args.zip_path)
+    zip_from_csv(
+        csv_path=args.csv_path,
+        base_path=args.base_path,
+        zip_path=args.zip_path,
+        board_name=args.board_name
+    )
 
     logging.info('exiting cli()')
     return
@@ -113,16 +148,22 @@ def dev():
 
     csv_path = config.CSV_FILEPATH
     zip_path = config.ZIP_PATH
-    images_dir_base_path = ''
-    zip_from_csv(csv_path, images_dir_base_path, zip_path)
+    base_path = '.'
+    board_name = config.BOARD_NAME
+    zip_from_csv(
+        csv_path=csv_path,
+        base_path=base_path,
+        zip_path=zip_path,
+        board_name=board_name,
+    )
 
     logging.warning('exiting dev()')
     return
 
 
 def main():
-    cli()
-##    dev()
+##    cli()
+    dev()
     return
 
 if __name__ == '__main__':
