@@ -78,36 +78,49 @@ def zip_from_csv(csv_path, images_dir, zip_path, board_name):
                 if row['media']:
                     add_to_zip(
                         zip_obj=myzip,
-                        filepath=generate_full_image_filepath(
+                        filepath=generate_full_image_filepath(# Filesystem
                             images_dir=images_dir,
                             board_name=board_name,
                             filename=row['media']
                         ),
-                        internal_path=row['media']
+                        internal_path=generate_full_image_filepath(# Zip internal
+                            images_dir='',
+                            board_name=board_name,
+                            filename=row['media']
+                        )
                     )
 
                 # Add preview_op to zip
                 if row['preview_op']:
                     add_to_zip(
                         zip_obj=myzip,
-                        filepath=generate_thumbnail_image_filepath(
+                        filepath=generate_thumbnail_image_filepath(# Filesystem
                             images_dir=images_dir,
                             board_name=board_name,
                             filename=row['preview_op']
                         ),
-                        internal_path=row['preview_op']
+                        internal_path=generate_thumbnail_image_filepath(# Zip internal
+                            images_dir='',
+                            board_name=board_name,
+                            filename=row['preview_op']
+                        )
                     )
 
                 # Add preview_reply to zip
                 if row['preview_reply']:
                     add_to_zip(
                         zip_obj=myzip,
-                        filepath=generate_thumbnail_image_filepath(
+                        filepath=generate_thumbnail_image_filepath(# Filesystem
                             images_dir=images_dir,
                             board_name=board_name,
                             filename=row['preview_reply']
                         ),
-                        internal_path=row['preview_reply']
+                        internal_path=generate_thumbnail_image_filepath(# Zip internal
+                            images_dir='',
+                            board_name=board_name,
+                            filename=row['preview_reply']
+                        )
+
                     )
     logging.info('Finished zipping files from {0} rows in {1} to {2}'.format(row_counter, csv_path, zip_path))
     return
