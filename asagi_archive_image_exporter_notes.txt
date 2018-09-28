@@ -103,10 +103,9 @@ Should be able to accept any .CSV dump with the required fields as long as it ha
 
 
 USAGE:
-python step2_zip.py csv_path image_dir_base_path zip_path
 Use . for current dir.
-
-python step2_zip.py data/g_images.csv . data/g_images.zip
+python step2_zip.py csv_path images_dir zip_path board_name
+python step2_zip.py data/g_images.csv . data/g_images.zip g
 
 
 
@@ -132,7 +131,7 @@ SELECT preview_orig FROM git WHERE timestamp > threshold (for previews)
 
 preview_orig will look like 1397912081601s.jpg and media_orig looks like 1397912081601.gif
 each is located in boards/<boardName>/<thumb or image>/<char 0-3>/<char 4-5>/<full image name>
-
+base/image/1536/63/1536631035276.webm
 
 
 
