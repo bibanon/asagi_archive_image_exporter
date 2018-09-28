@@ -46,9 +46,9 @@ def dump_partial_table(connection_string, table_name, csv_filepath, start_from, 
     all_images_q = session.query(Images)
     logging.info('len(all_images_q.all()) = {0}'.format(len(all_images_q.all())))
 
-    # Select the subset as or more recent than the supplied value
-    new_images_q = all_images_q.filter(Images.media >= u'debug/g/image/153/2/1532795456190.png')
-    logging.info('len(new_images_q.all()) = {0}'.format(len(new_images_q.all())))
+##    # Select the subset as or more recent than the supplied value
+##    new_images_q = all_images_q.filter(Images.media >= u'debug/g/image/153/2/1532795456190.png')
+##    logging.info('len(new_images_q.all()) = {0}'.format(len(new_images_q.all())))
 
     if stop_at:
         # Select the subset between the supplied values
@@ -95,10 +95,12 @@ def dump_table(connection_string, table_name, csv_filepath):
     with open(csv_filepath, 'w') as csvfile:
         outcsv = csv.writer(csvfile, delimiter=',',quotechar='"', quoting = csv.QUOTE_MINIMAL)
 
+        # Write header
         header = Images.__table__.columns.keys()
-
+        logging.debug('header = {0!r}'.format(header))
         outcsv.writerow(header)
 
+        # Store actual rows
         for record in q.all():
             outcsv.writerow([getattr(record, c) for c in header ])
 
@@ -118,14 +120,14 @@ def dev():
         csv_filepath=config.CSV_FILEPATH
     )
 
-    # Dump a range within a table
-    dump_partial_table(
-        connection_string=config.CONNECT_STRING,
-        table_name=config.TABLE_NAME,
-        csv_filepath=config.CSV_FILEPATH,
-        start_from='debug/g/image/153/2/1532795456190.png',
-        stop_at=None
-    )
+##    # Dump a range within a table
+##    dump_partial_table(
+##        connection_string=config.CONNECT_STRING,
+##        table_name=config.TABLE_NAME,
+##        csv_filepath=config.CSV_FILEPATH,
+##        start_from='debug/g/image/153/2/1532795456190.png',
+##        stop_at=None
+##    )
 
     logging.warning('exiting dev()')
     return
@@ -161,6 +163,7 @@ def cli():
 
 def main():
     dev()
+##    cli()
     return
 
 

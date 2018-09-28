@@ -25,11 +25,21 @@ from common import *# Things like logging setup
 
 def add_to_zip(zip_obj, filepath, internal_path):
     try:
-##        logging.debug('Zipping {0!r} as {1!r}'.format(filepath, internal_path))
+        logging.debug('Zipping {0!r} as {1!r}'.format(filepath, internal_path))
         zip_obj.write(filepath, internal_path)
     except WindowsError, err:
         logging.error(err)
     return
+
+
+
+def generate_media_filepath(base_path, media_field):
+    # Expects media field to look like: '1536631035276.webm'
+    # Outputs: 'BASE/153/6/1536631035276.webm'
+    assert(len(media_field) > 4)# We can't generate a path is this is lower, and the value is based on unix time so should always be over 1,000,000
+    media_filepath = os.path.join(base_path, media_field[0:2], media_field[2], media_field)
+    return media_filepath
+
 
 
 def zip_from_csv(csv_path, images_dir_base_path, zip_path):

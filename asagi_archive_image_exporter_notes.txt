@@ -1,5 +1,5 @@
 asagi_archive_image_exporter_notes.txt
-
+Notes on archive image dump util scripts.
 
 
 ===== PLAN =====
@@ -13,6 +13,10 @@ Row 0 of the CSV file should be colum names to ensure clarity.
 The two scripts should not depend on each other.
 One should produce a simple .csv file, the other should read a simple .csv file.
 
+
+
++++Questions+++
+How is data escaped?
 
 
 ===== Basic high-level pseudocode =====
