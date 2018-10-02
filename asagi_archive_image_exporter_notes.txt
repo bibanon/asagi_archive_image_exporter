@@ -21,6 +21,24 @@ One should produce a simple .csv file, the other should read a simple .csv file.
 +++Questions+++
 How is data escaped?
     TODO FIXME FIGURE THIS OUT SOON!
+Maybe use this?:
+LOAD DATA INFILE 'file_name'
+    INTO TABLE tbl_name
+
+    FIELDS TERMINATED BY ',' ENCLOSED BY '"'
+  LINES TERMINATED BY "\n"
+    IGNORE 1 LINES
+    (`doc_id`, `media_id`, `num`, `subnum`, `thread_num`, `op`, `timestamp`, `timestamp_expired`, `preview_orig`, `preview_w`, `preview_h`, `media_filename`, `media_w`, `media_h`, `media_size`, `media_hash`, `media_orig`, `spoiler`, `deleted`, `capcode`, `email`, `name`, `trip`, `title`, `comment`, `sticky`, `locked`, `poster_hash`, `poster_country`, `exif`)
+    ;
+
+Which translates to:
+
+#WIP:
+# What quoting is needed?
+# What delimiter?
+# What quotechar?
+#csv.DictReader(csvfile, delimiter=',',quotechar='"', quoting = csv.QUOTE_MINIMAL)
+#/WIP
 
 
 How do we assign names to each dump?
