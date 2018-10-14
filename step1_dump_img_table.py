@@ -124,7 +124,7 @@ def cli():
     parser.add_argument('table_name', help='table_name',
                     type=str)
     parser.add_argument('csv_filepath', help='csv_filepath',
-                    type=int)
+                    type=str)
     parser.add_argument('lower_bound', help='lower_bound',
                     type=str)
     args = parser.parse_args()
@@ -136,7 +136,7 @@ def cli():
         table_name=args.table_name,
         csv_filepath=args.csv_filepath,
         lower_bound=args.lower_bound,
-        stop_at=None
+        upper_bound=None
     )
 
     logging.info('exiting cli()')
