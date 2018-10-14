@@ -25,7 +25,7 @@ from common import *# Things like logging setup
 
 def add_to_zip(zip_obj, filepath, internal_path):
     try:
-        logging.debug('Zipping {0!r} as {1!r}'.format(filepath, internal_path))
+##        logging.debug('Zipping {0!r} as {1!r}'.format(filepath, internal_path))# PERFORMANCE This might cause slowdowns, disable outside testing
         zip_obj.write(filepath, internal_path)
     except WindowsError, err:
         logging.error(err)
@@ -44,7 +44,7 @@ def generate_image_filepath(board_dir, filename):
 
 def generate_full_image_filepath(images_dir, board_name, filename):
     # boards/<boardName>/<thumb or image>/<char 0-3>/<char 4-5>/<full image name>
-    board_dir = os.path.join(images_dir, 'image', board_name)
+##    board_dir = os.path.join(images_dir, 'image', board_name)# PERFORMANCE This might cause slowdowns, disable outside testing
     full_image_filepath = generate_image_filepath(board_dir, filename)
     return full_image_filepath
 

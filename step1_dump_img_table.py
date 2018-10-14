@@ -59,7 +59,7 @@ def dump_partial_table(connection_string, table_name, csv_filepath, lower_bound=
         # Select everything.
         range_images_q = session.query(Images)
 
-    logging.info('len(range_images_q.all()) = {0}'.format(len(range_images_q.all())))
+    logging.info('len(range_images_q.all()) = {0}'.format(len(range_images_q.all())))# PERFORMANCE This might cause slowdowns, disable outside testing
 
     with open(csv_filepath, 'wb') as csvfile:
         outcsv = csv.writer(csvfile, delimiter=',',quotechar='"', quoting = csv.QUOTE_ALL, lineterminator='\n')
@@ -71,7 +71,7 @@ def dump_partial_table(connection_string, table_name, csv_filepath, lower_bound=
         # Write records
         for record in range_images_q.all():# Write only images in the specified range
             outrow = [getattr(record, c) for c in header ]
-##            print('outrow = {0!r}'.format(outrow))
+##            print('outrow = {0!r}'.format(outrow))# PERFORMANCE This might cause slowdowns, disable outside testing
             outcsv.writerow(outrow)
 
     logging.info('Finished dumping table {0} to {1}'.format(table_name, csv_filepath))
@@ -79,7 +79,7 @@ def dump_partial_table(connection_string, table_name, csv_filepath, lower_bound=
 
 
 def dump_table(connection_string, table_name, csv_filepath):
-    logging.debug('dump_table() args = {0!r}'.format(locals()))# Record arguments
+    logging.debug('dump_table() args = {0!r}'.format(locals()))# Record arguments !DANGEROUS TO LOG CREDENTIALS!
     # https://stackoverflow.com/questions/2952366/dump-csv-from-sqlalchemy
     return dump_partial_table(
         connection_string,
@@ -129,7 +129,7 @@ def cli():
                     type=str)
     args = parser.parse_args()
 
-    logging.debug('args: {0!r}'.format(args))# Record CLI arguments
+    logging.debug('args: {0!r}'.format(args))# Record CLI arguments !DANGEROUS TO LOG CREDENTIALS!
 
     dump_partial_table(
         connection_string=args.connection_string,
