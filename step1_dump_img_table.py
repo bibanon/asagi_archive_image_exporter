@@ -144,8 +144,8 @@ def cli():
 
 
 def main():
-    dev()
-##    cli()
+##    dev()
+    cli()
     return
 
 

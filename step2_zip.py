@@ -69,7 +69,7 @@ def zip_from_csv(csv_path, images_dir, zip_path, board_name):
 
         # Add images from each row in the CSV file
         with open(csv_path, 'rb', ) as csvfile:
-            reader = csv.DictReader(csvfile, delimiter=',',quotechar='"', quoting = csv.QUOTE_ALL, lineterminator='\r\n')
+            reader = csv.DictReader(csvfile, delimiter=',',quotechar='"', quoting = csv.QUOTE_ALL, lineterminator='\n')
             for row in reader:
                 row_counter += 1
                 if (row_counter % 100 == 0):
