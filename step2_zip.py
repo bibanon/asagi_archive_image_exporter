@@ -44,14 +44,14 @@ def generate_image_filepath(board_dir, filename):
 
 def generate_full_image_filepath(images_dir, board_name, filename):
     # boards/<boardName>/<thumb or image>/<char 0-3>/<char 4-5>/<full image name>
-    board_dir = os.path.join(images_dir, 'image', board_name)
+    board_dir = os.path.join(images_dir, board_name,  'image')
     full_image_filepath = generate_image_filepath(board_dir, filename)
     return full_image_filepath
 
 
 def generate_thumbnail_image_filepath(images_dir, board_name, filename):
     # boards/<boardName>/<thumb or image>/<char 0-3>/<char 4-5>/<full image name>
-    board_dir = os.path.join(images_dir, 'thumb', board_name)
+    board_dir = os.path.join(images_dir, board_name, 'thumb')
     full_image_filepath = generate_image_filepath(board_dir, filename)
     return full_image_filepath
 
