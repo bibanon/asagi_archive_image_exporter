@@ -58,14 +58,14 @@ def generate_thumbnail_image_filepath(images_dir, board_name, filename):
     return full_image_filepath
 
 
-def zip_from_csv(csv_path, images_dir, zip_path, board_name):
+def zip_from_csv(csv_filepath, images_dir, zip_path, board_name):
     """Attempt to zip all images from the CSV file"""
     logging.debug('zip_from_csv() locals() = {0!r}'.format(locals()))# Record arguments
-    logging.info('Zipping files in {0} to {1}'.format(csv_path, zip_path))
+    logging.info('Zipping files in {0} to {1}'.format(csv_filepath, zip_path))
 
     # Error checking before any work is done
-    if not (os.path.exists(csv_path)):# We can't do anything if this is not present.
-        logging.error('CSV file does not exist, cannot export! csv_path = {0!r}'.format(csv_path))
+    if not (os.path.exists(csv_filepath)):# We can't do anything if this is not present.
+        logging.error('CSV file does not exist, cannot export! csv_filepath = {0!r}'.format(csv_filepath))
         raise ValueError()
     if not (os.path.exists(images_dir)):# We can't do anything if this is not present.
         logging.error('Image dir does not exist, cannot export! images_dir = {0!r}'.format(images_dir))
@@ -86,12 +86,12 @@ def zip_from_csv(csv_path, images_dir, zip_path, board_name):
         # First, add the CSV to the zip
         add_to_zip(
             zip_obj=myzip,
-            filepath=os.path.join(csv_path),
-            internal_path=os.path.basename(csv_path)
+            filepath=os.path.join(csv_filepath),
+            internal_path=os.path.basename(csv_filepath)
         )
 
         # Add images from each row in the CSV file
-        with open(csv_path, 'rb', ) as csvfile:
+        with open(csv_filepath, 'rb', ) as csvfile:
             reader = csv.DictReader(csvfile, delimiter=',',quotechar='"', quoting = csv.QUOTE_ALL, lineterminator='\n')
             for row in reader:
                 row_counter += 1
@@ -165,7 +165,7 @@ def zip_from_csv(csv_path, images_dir, zip_path, board_name):
         ))
 
     assert(os.path.exists(zip_path))# The zip file should now exist.
-    logging.info('Finished zipping files from {0} rows in {1} to {2}'.format(row_counter, csv_path, zip_path))
+    logging.info('Finished zipping files from {0} rows in {1} to {2}'.format(row_counter, csv_filepath, zip_path))
     return
 
 
@@ -173,20 +173,20 @@ def cli():
     """Command line running"""
     # Handle command line args
     parser = argparse.ArgumentParser()
-    parser.add_argument('--csv_path', help='csv_path',
+    parser.add_argument('--csv_filepath', help='csv_filepath, mandatory.',
                     type=str)
-    parser.add_argument('--images_dir', help='images_dir',
+    parser.add_argument('--images_dir', help='images_di, mandatory.r',
                     type=str)
-    parser.add_argument('--zip_path', help='zip_path',
+    parser.add_argument('--zip_path', help='zip_path, mandatory.',
                     type=str)
-    parser.add_argument('--board_name', help='board_name',
+    parser.add_argument('--board_name', help='board_name, mandatory.',
                     type=str)
     args = parser.parse_args()
 
     logging.debug('args: {0!r}'.format(args))# Record CLI arguments
 
     zip_from_csv(
-        csv_path=args.csv_path,
+        csv_filepath=args.csv_filepath,
         images_dir=args.images_dir,
         zip_path=args.zip_path,
         board_name=args.board_name
@@ -202,12 +202,12 @@ def dev():
 
     import config
 
-    csv_path = config.CSV_FILEPATH
+    csv_filepath = config.CSV_FILEPATH
     zip_path = config.ZIP_PATH
     images_dir = '.'
     board_name = config.BOARD_NAME
     zip_from_csv(
-        csv_path=csv_path,
+        csv_filepath=csv_filepath,
         images_dir=images_dir,
         zip_path=zip_path,
         board_name=board_name,

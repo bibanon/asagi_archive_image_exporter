@@ -131,12 +131,14 @@ def cli():
     parser = argparse.ArgumentParser()
     parser.add_argument('--connection_string', help='connection_string see https://docs.sqlalchemy.org/en/latest/core/engines.html',# https://docs.sqlalchemy.org/en/latest/core/engines.html
                     type=str)
-    parser.add_argument('--table_name', help='table_name',
+    parser.add_argument('--table_name', help='table_name, mandatory.',
                     type=str)
-    parser.add_argument('--csv_filepath', help='csv_filepath',
+    parser.add_argument('--csv_filepath', help='csv_filepath, mandatory.',
                     type=str)
-    parser.add_argument('--lower_bound', help='lower_bound',
-                    type=str)
+    parser.add_argument('--lower_bound', help='lower_bound, defaults to None',
+                    type=str, default=None)
+    parser.add_argument('--upper_bound', help='upper_bound, defaults to None',
+                    type=str, default=None)
     args = parser.parse_args()
 
     logging.debug('args: {0!r}'.format(args))# Record CLI arguments !DANGEROUS TO LOG CREDENTIALS!
