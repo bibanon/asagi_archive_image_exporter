@@ -10,3 +10,15 @@ python step1_dump_img_table.py "mysql://root:toor@localhost/asagi_exporter" "gif
 
 python step2_zip.py path_to_csv_file images_dir path_to_output_zip_file boardname
 python step2_zip.py "data/mysql_gif.csv" "images/" "data/mysql_gif_images.zip" "g"
+
+
+
+
+===== INSTALLATION =====
+
+Linux (only tested on ubuntu 16 lts)
+
+sudo apt-get install python-pip python-dev libmysqlclient-dev
+pip install requests
+pip install sqlalchemy
+pip install mysqlclient

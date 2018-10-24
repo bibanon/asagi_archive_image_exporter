@@ -57,7 +57,20 @@ def generate_thumbnail_image_filepath(images_dir, board_name, filename):
 
 
 def zip_from_csv(csv_path, images_dir, zip_path, board_name):
+    """Attempt to zip all images from the CSV file"""
+    logging.debug('zip_from_csv() locals() = {0!r}'.format(locals()))# Record arguments
     logging.info('Zipping files in {0} to {1}'.format(csv_path, zip_path))
+
+    assert(os.path.exists(csv_path))# We can't do anything if this is not present.
+    assert(os.path.exists(images_dir))# We can't do anything if this is not present.
+
+    # Ensure output dir exists
+    output_dir = os.path.dirname(zip_path)
+    if not os.path.exists(output_dir):
+        logging.debug('Creating output_dir = {0!r}'.format(output_dir))
+        os.makedirs(output_dir)
+        assert(os.path.exists(output_dir))# the dir should now exist
+
     row_counter = 0
     with zipfile.ZipFile(zip_path, 'w') as myzip:
         # First, add the CSV to the zip
@@ -122,6 +135,8 @@ def zip_from_csv(csv_path, images_dir, zip_path, board_name):
                         )
 
                     )
+
+    assert(os.path.exists(zip_path))# The zip file should now exist.
     logging.info('Finished zipping files from {0} rows in {1} to {2}'.format(row_counter, csv_path, zip_path))
     return
 
