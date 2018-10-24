@@ -44,7 +44,7 @@ def generate_image_filepath(board_dir, filename):
 
 def generate_full_image_filepath(images_dir, board_name, filename):
     # boards/<boardName>/<thumb or image>/<char 0-3>/<char 4-5>/<full image name>
-##    board_dir = os.path.join(images_dir, 'image', board_name)# PERFORMANCE This might cause slowdowns, disable outside testing
+    board_dir = os.path.join(images_dir, 'image', board_name)
     full_image_filepath = generate_image_filepath(board_dir, filename)
     return full_image_filepath
 
