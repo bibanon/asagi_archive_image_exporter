@@ -24,12 +24,14 @@ from common import *# Things like logging setup
 
 
 def add_to_zip(zip_obj, filepath, internal_path):
+    """Return whether file was added to zip"""
     try:
 ##        logging.debug('Zipping {0!r} as {1!r}'.format(filepath, internal_path))# PERFORMANCE This might cause slowdowns, disable outside testing
         zip_obj.write(filepath, internal_path)
+        return True
     except OSError, err:
         logging.error(err)
-    return
+    return False
 
 
 def generate_image_filepath(board_dir, filename):
@@ -63,7 +65,7 @@ def zip_from_csv(csv_path, images_dir, zip_path, board_name):
 
     # Error checking before any work is done
     if not (os.path.exists(csv_path)):# We can't do anything if this is not present.
-        logging.error('CSV file does not exist, cannot export! csv_path = {0!r}'.format(images_dir))
+        logging.error('CSV file does not exist, cannot export! csv_path = {0!r}'.format(csv_path))
         raise ValueError()
     if not (os.path.exists(images_dir)):# We can't do anything if this is not present.
         logging.error('Image dir does not exist, cannot export! images_dir = {0!r}'.format(images_dir))
@@ -76,6 +78,9 @@ def zip_from_csv(csv_path, images_dir, zip_path, board_name):
         os.makedirs(output_dir)
         assert(os.path.exists(output_dir))# the dir should now exist
 
+    file_counter = 0# Total number of files attempted.
+    failed_file_counter = 0# Total number of files that had a failure in some way.
+    success_file_counter = 0# Total number of files that were successfully added to zip.
     row_counter = 0
     with zipfile.ZipFile(zip_path, 'w') as myzip:
         # First, add the CSV to the zip
@@ -94,7 +99,7 @@ def zip_from_csv(csv_path, images_dir, zip_path, board_name):
                     logging.info('Processed {0} rows.'.format(row_counter))
                 # Add media to zip
                 if row['media']:
-                    add_to_zip(
+                    media_success = add_to_zip(
                         zip_obj=myzip,
                         filepath=generate_full_image_filepath(# Filesystem
                             images_dir=images_dir,
@@ -107,10 +112,14 @@ def zip_from_csv(csv_path, images_dir, zip_path, board_name):
                             filename=row['media']
                         )
                     )
-
+                    if media_success:
+                        success_file_counter += 1
+                    else:
+                        failed_file_counter += 1
+                    file_counter += 1
                 # Add preview_op to zip
                 if row['preview_op']:
-                    add_to_zip(
+                    preview_op_success = add_to_zip(
                         zip_obj=myzip,
                         filepath=generate_thumbnail_image_filepath(# Filesystem
                             images_dir=images_dir,
@@ -123,10 +132,15 @@ def zip_from_csv(csv_path, images_dir, zip_path, board_name):
                             filename=row['preview_op']
                         )
                     )
+                    if preview_op_success:
+                        success_file_counter += 1
+                    else:
+                        failed_file_counter += 1
+                    file_counter += 1
 
                 # Add preview_reply to zip
                 if row['preview_reply']:
-                    add_to_zip(
+                    preview_reply_success = add_to_zip(
                         zip_obj=myzip,
                         filepath=generate_thumbnail_image_filepath(# Filesystem
                             images_dir=images_dir,
@@ -138,8 +152,17 @@ def zip_from_csv(csv_path, images_dir, zip_path, board_name):
                             board_name=board_name,
                             filename=row['preview_reply']
                         )
-
                     )
+                    if preview_reply_success:
+                        success_file_counter += 1
+                    else:
+                        failed_file_counter += 1
+                    file_counter += 1
+
+    logging.debug('row_counter = {rc}'.format(rc=row_counter))
+    logging.debug('file_counter = {tot}, success_file_counter = {suc}, failed_file_counter = {fail}'.format(
+        tot=file_counter, suc=success_file_counter, fail=failed_file_counter
+        ))
 
     assert(os.path.exists(zip_path))# The zip file should now exist.
     logging.info('Finished zipping files from {0} rows in {1} to {2}'.format(row_counter, csv_path, zip_path))
@@ -150,13 +173,13 @@ def cli():
     """Command line running"""
     # Handle command line args
     parser = argparse.ArgumentParser()
-    parser.add_argument('csv_path', help='csv_path',
+    parser.add_argument('--csv_path', help='csv_path',
                     type=str)
-    parser.add_argument('images_dir', help='images_dir',
+    parser.add_argument('--images_dir', help='images_dir',
                     type=str)
-    parser.add_argument('zip_path', help='zip_path',
+    parser.add_argument('--zip_path', help='zip_path',
                     type=str)
-    parser.add_argument('board_name', help='board_name',
+    parser.add_argument('--board_name', help='board_name',
                     type=str)
     args = parser.parse_args()
 

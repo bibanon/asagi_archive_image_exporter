@@ -129,13 +129,13 @@ def cli():
     """Command line running"""
     # Handle command line args
     parser = argparse.ArgumentParser()
-    parser.add_argument('connection_string', help='connection_string see https://docs.sqlalchemy.org/en/latest/core/engines.html',# https://docs.sqlalchemy.org/en/latest/core/engines.html
+    parser.add_argument('--connection_string', help='connection_string see https://docs.sqlalchemy.org/en/latest/core/engines.html',# https://docs.sqlalchemy.org/en/latest/core/engines.html
                     type=str)
-    parser.add_argument('table_name', help='table_name',
+    parser.add_argument('--table_name', help='table_name',
                     type=str)
-    parser.add_argument('csv_filepath', help='csv_filepath',
+    parser.add_argument('--csv_filepath', help='csv_filepath',
                     type=str)
-    parser.add_argument('lower_bound', help='lower_bound',
+    parser.add_argument('--lower_bound', help='lower_bound',
                     type=str)
     args = parser.parse_args()
 
