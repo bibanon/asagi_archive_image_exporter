@@ -64,10 +64,10 @@ def zip_from_csv(csv_path, images_dir, zip_path, board_name):
     # Error checking before any work is done
     if not (os.path.exists(csv_path)):# We can't do anything if this is not present.
         logging.error('CSV file does not exist, cannot export! csv_path = {0!r}'.format(images_dir))
-        raise ValueError(images_dir=images_dir)
+        raise ValueError()
     if not (os.path.exists(images_dir)):# We can't do anything if this is not present.
         logging.error('Image dir does not exist, cannot export! images_dir = {0!r}'.format(images_dir))
-        raise ValueError(images_dir=images_dir)
+        raise ValueError()
 
     # Ensure output dir exists
     output_dir = os.path.dirname(zip_path)
