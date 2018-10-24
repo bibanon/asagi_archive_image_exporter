@@ -27,7 +27,7 @@ def add_to_zip(zip_obj, filepath, internal_path):
     try:
 ##        logging.debug('Zipping {0!r} as {1!r}'.format(filepath, internal_path))# PERFORMANCE This might cause slowdowns, disable outside testing
         zip_obj.write(filepath, internal_path)
-    except WindowsError, err:
+    except OSError, err:
         logging.error(err)
     return
 
