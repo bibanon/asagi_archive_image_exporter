@@ -169,6 +169,12 @@ def zip_from_csv(csv_filepath, images_dir, zip_path, board_name):
     return
 
 
+def yaml():
+    """Run from a YAML config file"""
+    logging.info('exiting yaml()')
+    return
+
+
 def cli():
     """Command line running"""
     # Handle command line args
